@@ -30,6 +30,7 @@ The user interface uses single touches to draw on the screen and edit objects.
 | Export canvas as SVG            |  Yes           |
 | Import SVG                      |  No           |
 | Multi-touch / pinch zoom        | Not yet       |
+| Copy layers                     | Yes           |
 
 ### Design ###
 All drawing functionality takes place inside the `DrawingEngine` object, and each layer is responsible for its own drawing functions.
