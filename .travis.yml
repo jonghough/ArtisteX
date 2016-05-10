@@ -4,7 +4,7 @@ android:
     - build-tools-23.0.0
     - android-23
     - android-L
-    - sys-img-x86-android-tv-l
+    - sys-img-armeabi-v7a-android-19
     - add-on
     - extra
 script: ./gradlew assembleDebug
