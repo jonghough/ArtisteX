@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/jonghough/ArtisteX.svg?branch=master)](https://travis-ci.org/jonghough/ArtisteX)
 # ArtisteX #
 
 Android Graphics Editor
