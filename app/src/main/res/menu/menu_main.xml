@@ -1,0 +1,105 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/file"
+        android:orderInCategory="102"
+        android:showAsAction="always"
+        android:title="File">
+        <menu>
+            <item
+                android:id="@+id/viewbitmaps"
+                android:title="View saved bitmaps"></item>
+            <item
+                android:id="@+id/viewsvgs"
+                android:title="View saved SVGs"></item>
+            <item
+                android:id="@+id/savesvg"
+                android:title="Save SVG"></item>
+            <item
+                android:id="@+id/savebitmap"
+                android:title="Save bitmap"></item>
+            <item
+                android:id="@+id/clearall"
+                android:title="Clear canvas"></item>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/edit"
+        android:orderInCategory="103"
+        android:showAsAction="always"
+        android:title="Edit">
+        <menu>
+            <item
+                android:id="@+id/copy"
+                android:title="Copy"></item>
+
+            <item
+                android:id="@+id/undo"
+                android:title="Undo"></item>
+            <item
+                android:id="@+id/listlayers"
+                android:title="List Layers"></item>
+            <item
+                android:id="@+id/strokecolor"
+                android:title="Stroke color"></item>
+            <item
+                android:id="@+id/fillcolor"
+                android:title="Fill color"></item>
+            <item
+                android:id="@+id/strokethickness"
+                android:title="Stroke thickness"></item>
+            <item
+                android:id="@+id/backgroundcolor"
+                android:title="Background color"></item>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/settings"
+        android:orderInCategory="104"
+        android:showAsAction="always"
+        android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/showbounding"
+                android:title="Show bounding rect"></item>
+            <item
+                android:id="@+id/drawing"
+                android:title="Draw"></item>
+            <item
+                android:id="@+id/vertex"
+                android:title="Vertex manipulation"></item>
+
+            <item
+                android:id="@+id/control_points"
+                android:title="Control point manipulation"></item>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/layer"
+        android:orderInCategory="105"
+        android:showAsAction="always"
+        android:title="Choose layer">
+        <menu>
+            <item
+                android:id="@+id/image"
+                android:title="image"></item>
+            <item
+                android:id="@+id/pen"
+                android:title="pen"></item>
+            <item
+                android:id="@+id/polygon"
+                android:title="polygon"></item>
+            <item
+                android:id="@+id/pencil"
+                android:title="pencil"></item>
+            <item
+                android:id="@+id/text"
+                android:title="text"></item>
+            <item
+                android:id="@+id/eraser"
+                android:title="eraser"></item>
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dialog_basic_width"
+    android:layout_height="@dimen/dialog_basic_height"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose a new name" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/rename_edittext"
+        style="@style/editTextStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:cursorVisible="true"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
+        android:maxLength="50"
+        android:padding="5dp" />
+
+    <Button
+        android:id="@+id/completebutton"
+        style="@style/buttonStyle"
+        android:text="complete" />
+
+</LinearLayout>
