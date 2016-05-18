@@ -120,7 +120,10 @@ public class Polygon extends Pen {
 
             mRotateUndoHandler = new RotateUndoHandler();
             mRotateUndoHandler.cachedRotation = mTransformer.getCurrentRotation();
-            return null;
+            RotateUndoHandler rh = new RotateUndoHandler();
+            rh.cachedRotation = mTransformer.getCurrentRotation();
+            return new IUndo(rh);
+
         } else if (IconManager.instance().getScaleIcon().isInIcon(x, y)) {
             mState = State.SCALING;
 
@@ -164,7 +167,7 @@ public class Polygon extends Pen {
                 /* drawing - i.e. adding points to the vertex list - is prohibited.*/
                 mLastPosition.set(x, y);
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    handleDownAction(x, y);
+                    return handleDownAction(x, y);
                 }
                 break;
             case ROTATING:

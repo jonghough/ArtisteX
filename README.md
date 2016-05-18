@@ -38,7 +38,7 @@ All drawing functionality takes place inside the `DrawingEngine` object, and eac
 
 ### Some UML-ish diagram ###
 The design uses a single interface, *ILayer*, which any object on the canvas must implement.
-* ![uml or something](/images/uml.png?raw=true "diagram")
+![uml or something](/images/uml.png?raw=true "diagram")
 
 ### Tests ###
 `./gradlew test`
