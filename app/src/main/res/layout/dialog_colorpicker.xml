@@ -21,9 +21,7 @@
             android:id="@+id/alphaseekbar"
             style="@style/seekbarStyle"
             android:max="255"
-            android:orientation="vertical"
-            android:layout_height="50dp"
-            android:layout_weight="3" />
+            android:orientation="vertical"/>
 
         <TextView
             style="@style/textviewStyle"
@@ -44,9 +42,7 @@
             android:id="@+id/redseekbar"
             style="@style/seekbarStyle"
             android:max="255"
-            android:orientation="vertical"
-            android:layout_height="50dp"
-            android:layout_weight="3" />
+            android:orientation="vertical" />
 
         <TextView
             style="@style/textviewStyle"
@@ -67,9 +63,7 @@
             android:id="@+id/greenseekbar"
             style="@style/seekbarStyle"
             android:max="255"
-            android:orientation="vertical"
-            android:layout_height="50dp"
-            android:layout_weight="3" />
+            android:orientation="vertical" />
 
         <TextView
             style="@style/textviewStyle"
@@ -90,9 +84,7 @@
             android:id="@+id/blueseekbar"
             style="@style/seekbarStyle"
             android:max="255"
-            android:orientation="vertical"
-            android:layout_height="50dp"
-            android:layout_weight="3" />
+            android:orientation="vertical" />
 
         <TextView
             style="@style/textviewStyle"

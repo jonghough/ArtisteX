@@ -2,6 +2,7 @@
 <resources>
     <style name="ArtisteXTheme" parent="android:Theme.Material.Light">
         <item name="android:actionBarStyle">@style/actionbarStyle</item>
+        <item name="android:seekBarStyle">@style/seekbarStyle</item>
     </style>
 
     <style name="buttonStyle" parent="android:style/Widget.Button">
@@ -29,8 +30,8 @@
     <style name="seekbarStyle" parent="android:style/Widget.SeekBar">
         <item name="android:layout_width">200dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">4dip</item>
-        <item name="android:maxHeight">4dip</item>
+        <item name="android:minHeight">5dip</item>
+        <item name="android:maxHeight">5dip</item>
         <item name="android:thumbOffset">8dip</item>
         <item name="android:focusable">true</item>
         <item name="android:progressDrawable">@drawable/seekbar_progress</item>
