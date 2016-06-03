@@ -36,9 +36,8 @@ The user interface uses single touches to draw on the screen and edit objects.
 ### Design ###
 All drawing functionality takes place inside the `DrawingEngine` object, and each layer is responsible for its own drawing functions.
 
-### Some UML-ish diagram ###
-The design uses a single interface, *ILayer*, which any object on the canvas must implement.
-![uml or something](/images/uml.png?raw=true "diagram")
+### Example
+![gif 1](/aritstex_gif1.gif)
 
 ### Tests ###
 `./gradlew test`
