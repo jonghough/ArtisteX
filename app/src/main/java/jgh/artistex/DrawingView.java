@@ -206,6 +206,8 @@ public class DrawingView extends View {
         return DrawingEngine.Instance().getBackgroundColor();
     }
 
+    public void delete(int index){ DrawingEngine.Instance().delete(index);invalidate();}
+
     public void setBackgroundColor(int color){
         DrawingEngine.Instance().setBackgroundColor(color);
     }

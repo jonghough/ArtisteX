@@ -206,6 +206,8 @@ public class DrawingEngine {
         mUndoStack.push(new IUndo(handler));
     }
 
+
+
     /**
      *
      * @return
@@ -514,16 +516,69 @@ public class DrawingEngine {
         }
     }
 
+    public void delete(int index) throws IndexOutOfBoundsException{
+        final int i = index;
+        final ILayer layer;
+        final boolean isInDrawingStack;
+        if(index < mDrawingStack.size()) {
+            isInDrawingStack = true;
+            try {
+                layer = mDrawingStack.remove(index);
+            } catch (IndexOutOfBoundsException e) {
+                throw e;
+            }
+        }
+        else{
+            isInDrawingStack = false;
+            layer = mCurrentLayer;
+            if(mDrawingStack.size() > 0) {
+                ILayer poppedLayer = mDrawingStack.remove(mDrawingStack.size() - 1);
+                mCurrentLayer = poppedLayer;
+                mCurrentLayer.setStart();
+            }
+            else{
+                mCurrentLayer = null;
+            }
+        }
+
+        IUndoHandler undoHandler = new IUndoHandler() {
+            boolean putInStack = isInDrawingStack;
+            @Override
+            public void handleUndo() {
+
+                if(putInStack)
+                    mDrawingStack.add(i, layer);
+                else{
+                    if(mCurrentLayer != null){
+                        mDrawingStack.add(mCurrentLayer);
+                        mCurrentLayer.setStop();
+                    }
+                    mCurrentLayer = layer;
+                    mCurrentLayer.setStart();
+                }
+            }
+
+            @Override
+            public void handleRedo() {
+
+            }
+        };
+
+        mUndoStack.push(new IUndo(undoHandler));
+    }
+
+
+
 
     /**
-     * Saves the contents of the screen to a bitmap file, of the given format. All <code>ILayer</code>
-     * objects inside the screen bounds will be drawn to the bitmap file.
-     *
-     * @param width  screen width
-     * @param height screen height
-     * @param format the format, PNG or JPEG
-     * @throws FileNotFoundException
-     */
+         * Saves the contents of the screen to a bitmap file, of the given format. All <code>ILayer</code>
+         * objects inside the screen bounds will be drawn to the bitmap file.
+         *
+         * @param width  screen width
+         * @param height screen height
+         * @param format the format, PNG or JPEG
+         * @throws FileNotFoundException
+         */
     private void saveScreenAsImage(int width, int height, Bitmap.CompressFormat format)
             throws FileNotFoundException {
 
