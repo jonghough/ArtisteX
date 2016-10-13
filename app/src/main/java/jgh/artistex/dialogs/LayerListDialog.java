@@ -18,7 +18,8 @@ public class LayerListDialog extends BasicDialog{
 
     private ListView mList;
 
-    public LayerListDialog(Activity activity, int rootLayout, ArrayList<String> layerNames) {
+    public LayerListDialog(final Activity activity, int rootLayout, ArrayList<String> layerNames, final LayerOptionsCallbackHandler callbackHandler) {
+
         super(activity, rootLayout);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1);
@@ -31,8 +32,9 @@ public class LayerListDialog extends BasicDialog{
 
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-                  //  new SingleLayerOptionsDialog(mActivity,mView, position);
+                    new SingleLayerOptionsDialog(activity, position, callbackHandler);
                     getDialog().dismiss();
+
 
                 }
 

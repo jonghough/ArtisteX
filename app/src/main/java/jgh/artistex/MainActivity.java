@@ -24,6 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import jgh.artistex.dialogs.LayerOptionsCallbackHandler;
 import jgh.artistex.dialogs.ShapeDialog;
 import jgh.artistex.dialogs.ShapeSetCallbackHandler;
 import jgh.artistex.engine.Layers.Bitmaps.BitmapLayer;
@@ -241,8 +242,9 @@ public class MainActivity extends Activity {
             mView.saveSvgData();
         }
         else if(id == R.id.listlayers){
-            new LayerListDialog(this, R.layout.dialog_layerlist, mView.getLayerNameList());
-        }
+           new LayerListDialog(this, R.layout.dialog_layerlist, mView.getLayerNameList(), new DefaultLayerOptionsCallbackHandler());
+
+       }
         else if(id == R.id.showbounding){
             mView.setShowTransformBox(!mView.getShowTransformBox());
         }
@@ -328,4 +330,23 @@ public class MainActivity extends Activity {
         } else
             return -1;
     }
+
+    private class DefaultLayerOptionsCallbackHandler implements LayerOptionsCallbackHandler {
+
+        @Override
+        public void select(int index) {
+
+        }
+
+        @Override
+        public void delete(int index) {
+            mView.delete(index);
+        }
+
+        @Override
+        public void rename(int index) {
+
+        }
+    }
+
 }
