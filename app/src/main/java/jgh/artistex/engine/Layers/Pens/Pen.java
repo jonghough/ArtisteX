@@ -261,13 +261,14 @@ public class Pen extends BasePen {
             if (mVertexList.size() > 1) {
                 canvas.drawPath(mPath, mFillPaint);
                 canvas.drawPath(mPath, mStrokePaint);
-                if (mState == State.BEZIER)
-                    mBezierController.draw(mVertexList, mBezierVertexList, canvas);
-                else if (mState == State.VERTEX)
-                    mVertexController.draw(mVertexList, canvas);
+
                 //only show transform box if this
                 // layer is current layer and showtransformbox flag is true.
                 if (mInteracting && showTransformBox) {
+                    if (mState == State.BEZIER)
+                        mBezierController.draw(mVertexList, mBezierVertexList, canvas);
+                    else if (mState == State.VERTEX)
+                        mVertexController.draw(mVertexList, canvas);
                     //bounding rect and icons
                     mTransformer.draw(canvas);
                 }

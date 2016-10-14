@@ -1,8 +1,10 @@
 package jgh.artistex;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +15,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.SyncStateContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +34,7 @@ import jgh.artistex.dialogs.ShapeDialog;
 import jgh.artistex.dialogs.ShapeSetCallbackHandler;
 import jgh.artistex.engine.Layers.Bitmaps.BitmapLayer;
 import jgh.artistex.engine.Layers.Bitmaps.TextLayer;
+import jgh.artistex.engine.utils.Toaster;
 import jgh.artistex.engine.visitors.ModeSelectVisitor;
 import jgh.artistex.engine.Layers.Pens.Pen;
 import jgh.artistex.engine.Layers.Pens.Pencil;
@@ -60,6 +66,7 @@ public class MainActivity extends Activity {
     private DrawingView mView;
 
 
+    private Intent mData;
     /**
      * Gallery
      */
@@ -87,12 +94,12 @@ public class MainActivity extends Activity {
 
 
     @Override
-    public boolean onPrepareOptionsMenu (Menu menu){
+    public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem item = menu.findItem(R.id.showbounding);
-        if(item != null){
-            if(mView.getShowTransformBox())
+        if (item != null) {
+            if (mView.getShowTransformBox())
                 item.setTitle("Hide bounding box");
             else
                 item.setTitle("Show bounding box");
@@ -105,8 +112,8 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem item = menu.findItem(R.id.showbounding);
-        if(item != null){
-            if(mView.getShowTransformBox())
+        if (item != null) {
+            if (mView.getShowTransformBox())
                 item.setTitle("Hide bounding box");
             else
                 item.setTitle("Show bounding box");
@@ -119,23 +126,20 @@ public class MainActivity extends Activity {
 
         int id = item.getItemId();
 
-       if (id == R.id.drawing) {
+        if (id == R.id.drawing) {
             ModeSelectVisitor v = new ModeSelectVisitor();
             v.setMode(ModeSelectVisitor.Mode.DRAW);
             mView.visitLayer(v);
-        }
-        else if (id == R.id.control_points) {
+        } else if (id == R.id.control_points) {
             ModeSelectVisitor v = new ModeSelectVisitor();
             v.setMode(ModeSelectVisitor.Mode.BEZIER);
             mView.visitLayer(v);
-        }
-        else if (id == R.id.vertex) {
+        } else if (id == R.id.vertex) {
             ModeSelectVisitor v = new ModeSelectVisitor();
             v.setMode(ModeSelectVisitor.Mode.VERTEX);
             mView.visitLayer(v);
-        }
-        else if(id == R.id.strokecolor){
-            new ColorPickerDialog(this, mView.getStrokeColor(), new ColorSetCallbackHandler(){
+        } else if (id == R.id.strokecolor) {
+            new ColorPickerDialog(this, mView.getStrokeColor(), new ColorSetCallbackHandler() {
 
                 @Override
                 public void setColor(int color) {
@@ -143,8 +147,7 @@ public class MainActivity extends Activity {
                     mView.invalidate();
                 }
             });
-        }
-        else if(id == R.id.strokethickness){
+        } else if (id == R.id.strokethickness) {
             new SingleSliderDialog(this, 1, "Thickness", "Select", new OnClickHandler() {
                 @Override
                 public void onClickWithInt(int value) {
@@ -157,9 +160,8 @@ public class MainActivity extends Activity {
                     //not used.
                 }
             });
-        }
-        else if(id == R.id.fillcolor){
-            new ColorPickerDialog(this, mView.getFillColor(), new ColorSetCallbackHandler(){
+        } else if (id == R.id.fillcolor) {
+            new ColorPickerDialog(this, mView.getFillColor(), new ColorSetCallbackHandler() {
 
                 @Override
                 public void setColor(int color) {
@@ -167,9 +169,8 @@ public class MainActivity extends Activity {
                     mView.invalidate();
                 }
             });
-        }
-        else if(id == R.id.backgroundcolor){
-            new ColorPickerDialog(this, mView.getBackgroundColor(), new ColorSetCallbackHandler(){
+        } else if (id == R.id.backgroundcolor) {
+            new ColorPickerDialog(this, mView.getBackgroundColor(), new ColorSetCallbackHandler() {
 
                 @Override
                 public void setColor(int color) {
@@ -177,36 +178,29 @@ public class MainActivity extends Activity {
                     mView.invalidate();
                 }
             });
-        }
-        else if (id == R.id.copy) {
+        } else if (id == R.id.copy) {
             mView.copy();
-        }
-        else if (id == R.id.undo) {
+        } else if (id == R.id.undo) {
             mView.undo();
-        }
-        else if (id == R.id.image) {
+        } else if (id == R.id.image) {
             Intent i = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
             startActivityForResult(i, GALLERY);
-        }
-        else if (id == R.id.pen) {
+        } else if (id == R.id.pen) {
             Pen p = new Pen();
             mView.setLayer(p);
-        }
-        else if(id == R.id.pencil){
+        } else if (id == R.id.pencil) {
             Pencil p = new Pencil();
             mView.setLayer(p);
-        }
-        else if (id == R.id.polygon) {
+        } else if (id == R.id.polygon) {
             new ShapeDialog(this, new ShapeSetCallbackHandler() {
                 @Override
                 public void onShapeSet(int vertexSize, int type) {
-                    if(type == 0){
+                    if (type == 0) {
                         ArrayList<PointF> p = PolygonFactory.createShapeStar(vertexSize, 100, 100, 100);
                         mView.setLayer(new Polygon(p));
-                    }
-                    else if(type == 1) {
+                    } else if (type == 1) {
                         ArrayList<PointF> p = PolygonFactory.createPolygon(vertexSize, 100, 100, 100);
                         mView.setLayer(new Polygon(p));
                     }
@@ -215,8 +209,7 @@ public class MainActivity extends Activity {
 
             });
 
-        }
-        else if(id == R.id.text){
+        } else if (id == R.id.text) {
             new TextPickerDialog(this, "Default", new TextPickerDialog.TextPickerCallbackHandler() {
                 @Override
                 public void onTextChosen(String text) {
@@ -225,32 +218,24 @@ public class MainActivity extends Activity {
                 }
             });
 
-        }
-        else if (id == R.id.eraser) {
+        } else if (id == R.id.eraser) {
             //TODO
-        }
-        else if(id == R.id.viewbitmaps){
+        } else if (id == R.id.viewbitmaps) {
             new UserFileViewDialog(this, UserFileViewDialog.FileType.IMAGE);
-        }
-        else if(id == R.id.viewsvgs){
+        } else if (id == R.id.viewsvgs) {
             new UserFileViewDialog(this, UserFileViewDialog.FileType.SVG);
-        }
-        else if(id == R.id.savebitmap){
+        } else if (id == R.id.savebitmap) {
             mView.saveBitmapData();
-        }
-        else if(id == R.id.savesvg){
+        } else if (id == R.id.savesvg) {
             mView.saveSvgData();
-        }
-        else if(id == R.id.listlayers){
-           new LayerListDialog(this, R.layout.dialog_layerlist, mView.getLayerNameList(), new DefaultLayerOptionsCallbackHandler());
+        } else if (id == R.id.listlayers) {
+            new LayerListDialog(this, R.layout.dialog_layerlist, mView.getLayerNameList(), new DefaultLayerOptionsCallbackHandler());
 
-       }
-        else if(id == R.id.showbounding){
+        } else if (id == R.id.showbounding) {
             mView.setShowTransformBox(!mView.getShowTransformBox());
+        } else if (id == R.id.clearall) {
+            mView.clearCanvas();
         }
-        else if(id == R.id.clearall){
-           mView.clearCanvas();
-       }
         return super.onOptionsItemSelected(item);
     }
 
@@ -267,6 +252,21 @@ public class MainActivity extends Activity {
     }
 
 
+    private void loadImage() {
+        Uri selectedImageUri = mData.getData();
+        int imageId = getCursorIndex(selectedImageUri);
+        Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
+                getApplicationContext().getContentResolver(), imageId,
+                MediaStore.Images.Thumbnails.MINI_KIND, null);
+
+        bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(),
+                false);
+
+
+        BitmapLayer bml = new BitmapLayer(bmp, 50f, 50f);
+        mView.setLayer(bml);
+    }
+
     /**
      * Callback for photo picker activity. After picture is chosen we
      * need to get the bitmap and scale it to a reasonable size. Bitmap will then be added to the
@@ -281,31 +281,41 @@ public class MainActivity extends Activity {
         if (data == null) {
             Log.e(TAG, "Error, intent is null");
         } else {
-            switch (requestCode) {
-                case (GALLERY):
-                    Uri selectedImageUri = data.getData();
-                    int imageId = getCursorIndex(selectedImageUri);
-                    Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
-                            getApplicationContext().getContentResolver(), imageId,
-                            MediaStore.Images.Thumbnails.MINI_KIND, null);
+            mData = data;
+            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
 
-                    bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(),
-                            false);
-
-
-                    BitmapLayer bml = new BitmapLayer(bmp, 50f, 50f);
-                    mView.setLayer(bml);
-                    break;
-
-                default:
-                    break;
-
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        101);
+            } else {
+                loadImage();
             }
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 101: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    loadImage();
 
-    public DrawingView getView(){
+
+                } else {
+                    Toaster.makeLongToast(this, "NO permissions");
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+
+    public DrawingView getView() {
         return mView;
     }
 

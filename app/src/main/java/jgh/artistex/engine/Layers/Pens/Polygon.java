@@ -81,7 +81,7 @@ public class Polygon extends Pen {
 
     private void setControlPoints() {
         mBezierVertexList = new ArrayList<>();
-        for (int i = 0; i < mVertexList.size(); i++) {
+        for (int i = 0; i < mVertexList.size()-1; i++) {
 
             PointF p = mVertexList.get(i);
             PointF q = mVertexList.get((i + 1) % mVertexList.size());
