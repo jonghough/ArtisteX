@@ -7,7 +7,7 @@ import android.graphics.RectF;
 /**
  * Class for drawing Rectangles around Layers. Behaviour is similar to
  * <code>RectF</code>, but allows right and left to be interchanged ( and top with bottom).
- * This si useful when dealing with negative scaling of Layers.
+ * This is useful when dealing with negative scaling of Layers.
  */
 public class SpecialRectF {
 

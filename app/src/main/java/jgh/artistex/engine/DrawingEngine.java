@@ -235,7 +235,7 @@ public class DrawingEngine {
             public void handleUndo() {
                 GlobalValues.fillColor = currentColor;
                 if(layer != null) {
-                    ColorSetVisitor csv2 = new ColorSetVisitor(currentColor, 1);
+                    ColorSetVisitor csv2 = new ColorSetVisitor(currentColor, 0);
                     layer.accept(csv2);
                 }
             }
